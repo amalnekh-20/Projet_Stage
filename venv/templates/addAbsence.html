@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajouter un absent(e)</title>
+  <link rel="stylesheet" href="/static/home.css">
+    <style>
+    .formulaire {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f9fafb;
+      border-radius: 20px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    .formulaire h2 {
+      text-align: center;
+      color: #1d4ed8;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    .form-group input:focus {
+      border-color: #1d4ed8;
+      outline: none;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #1d4ed8;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2563eb;
+    }
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #1d4ed8;
+      text-align: center;
+    }
+     .form-group select {
+        width: 80%;
+        padding: 10px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 16px;
+        background-color: #ffffff;
+      }    
+      .form-group input[type="checkbox"] {
+        margin-right: 8px;
+        vertical-align: middle; /* aligne la checkbox avec le texte */
+        width: 20px; 
+
+        height: 20px; 
+        cursor: pointer; 
+
+        transform: scale(1.2); 
+      }
+      .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 16px;
+        resize: vertical; /* permet de redimensionner la zone de texte verticalement */
+      }
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <div class="header__logo-text">IFFTS</div>
+    </div>
+    <nav class="header__nav">
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+
+    </nav>
+  </header>
+
+  <div class="formulaire">
+    <h2>Ajouter un(e) absent(e)</h2>
+    <form method="POST" action="/addAbsence" class="formulaire">
+      
+ 
+      <div class="form-group">
+        <label for="stagiaire">Stagiaire :</label>
+        <select id="stagiaire" name="id_stagiaire" required>
+          {% for stagiaire in stagiaires %}
+            <option value="{{ stagiaire.Id_Stagiaire}}">{{ stagiaire.Nom }}  {{stagiaire.Prenom}}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="date_absence">Date  :</label>
+        <input type="date" id="date_absence" name="date_absence" required>
+      </div>
+      <div class="form-group">
+        <label for="motif">Motif :</label>
+        <select id="motif" name="motif" required>
+          <option value="Certificat médical">Certificat médical</option>
+          <option value="Cahier de soins">Cahier de soins</option>
+          <option value="Autorisation ">Autorisation </option>
+          <option value="Note explicative">Note explicative</option>
+          <option value="Autre">Autre</option>
+        </select>
+
+      </div>
+      <div class="form-group">
+        <label for="nbre_jour">Nombre de jours :</label>
+        <input type="number" id="nbre_jour" name="nbre_jour" required>
+      </div>
+
+      <button type="submit" class="add-absence-button">Ajouter Absence</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Ajouter Stagiaire </title>
+  <link rel="stylesheet" href="/static/home.css">
+  <style>
+    .formulaire {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f9fafb;
+      border-radius: 20px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    .formulaire h2 {
+      text-align: center;
+      color: #1d4ed8;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    .form-group input:focus {
+      border-color: #1d4ed8;
+      outline: none;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #1d4ed8;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2563eb;
+    }
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #1d4ed8;
+      text-align: center;
+    }
+     .form-group select {
+        width: 80%;
+        padding: 10px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 16px;
+        background-color: #ffffff;
+      }    
+  </style>
+</head>
+<body>
+   <header>
+    <div class="header-left">
+      <div class="header__logo-text">IFFTS</div>
+    </div>
+    <nav class="header__nav">
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+
+    </nav>
+  </header>
+  <h2>Ajouter un Stagiaire</h2>
+ <form action="/addStagiaire" class="formulaire" method="post">
+  <div class="form-group">
+    <label for="Nom">Nom :</label>
+    <input type="text" id="Nom" name="nom" required>
+  </div>
+
+  <div class="form-group">
+    <label for="Prenom">Prénom :</label>
+    <input type="text" id="Prenom" name="prenom" required>
+  </div>
+
+  <div class="form-group">
+    <label for="CINE">CINE :</label>
+    <input type="text" id="CINE" name="cine" required>
+    {% if erreur_cine %}
+      <div style="color: red; background-color: #ffe6e6; border: 1px solid red; padding: 10px; margin-bottom: 15px; border-radius: 5px;">
+        {{ erreur_cine }}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="form-group">
+    <label for="Date_Naissance">Date de naissance :</label>
+    <input type="date" id="Date_Naissance" name="date_naissance" required>
+  </div>
+
+  <div class="form-group">
+    <label for="Lieu_Naissance">Lieu de naissance :</label>
+<select id="Lieu_Naissance" name="lieu_naissance" required>
+  <option value="">-- Choisir un lieu --</option>
+  <option value="Agadir">Agadir</option>
+  <option value="Al Hoceima">Al Hoceima</option>
+  <option value="Azilal">Azilal</option>
+  <option value="Azrou">Azrou</option>
+  <option value="Beni Mellal">Beni Mellal</option>
+  <option value="Berkane">Berkane</option>
+  <option value="Boulemane">Boulemane</option>
+  <option value="Casablanca">Casablanca</option>
+  <option value="Chefchaouen">Chefchaouen</option>
+  <option value="Dakhla">Dakhla</option>
+  <option value="El Jadida">El Jadida</option>
+  <option value="Errachidia">Errachidia</option>
+  <option value="Fnideq">Fnideq</option>
+  <option value="Fès">Fès</option>
+  <option value="Guelmim">Guelmim</option>
+  <option value="Ifrane">Ifrane</option>
+  <option value="Inezgane">Inezgane</option>
+  <option value="Jerada">Jerada</option>
+  <option value="Kalaat Sraghna">Kalaat Sraghna</option>
+  <option value="Kenitra">Kenitra</option>
+  <option value="Khouribga">Khouribga</option>
+  <option value="Ksar El Kebir">Ksar El Kebir</option>
+  <option value="Khemisset">Khemisset</option>
+  <option value="Laâyoune">Laâyoune</option>
+  <option value="Larache">Larache</option>
+  <option value="Marrakech">Marrakech</option>
+  <option value="Meknès">Meknès</option>
+  <option value="Midelt">Midelt</option>
+  <option value="Mohammedia">Mohammedia</option>
+  <option value="Nador">Nador</option>
+  <option value="Ouarzazate">Ouarzazate</option>
+  <option value="Oued Zem">Oued Zem</option>
+  <option value="Oujda">Oujda</option>
+  <option value="Rabat">Rabat</option>
+  <option value="Safi">Safi</option>
+  <option value="Salé">Salé</option>
+  <option value="Sefrou">Sefrou</option>
+  <option value="Settat">Settat</option>
+  <option value="Sidi Kacem">Sidi Kacem</option>
+  <option value="Sidi Slimane">Sidi Slimane</option>
+  <option value="Taourirt">Taourirt</option>
+  <option value="Tan-Tan">Tan-Tan</option>
+  <option value="Taroudant">Taroudant</option>
+  <option value="Taza">Taza</option>
+  <option value="Temara">Temara</option>
+  <option value="Tétouan">Tétouan</option>
+  <option value="Tiflet">Tiflet</option>
+  <option value="Tiznit">Tiznit</option>
+  <option value="Youssoufia">Youssoufia</option>
+  <option value="Zagora">Zagora</option>
+</select>
+
+  </div>
+
+  <div class="form-group">
+    <label for="Type_Bac">Type de Bac :</label>
+      <select id="Type_Bac" name="type_bac" required>
+        <option value="">-- Choisir un type de Bac --</option>
+        <option value="Sciences Mathématiques A">Sciences Mathématiques A</option>
+        <option value="Sciences Mathématiques B">Sciences Mathématiques B</option>
+        <option value="Sciences Physiques">Sciences Physiques</option>
+        <option value="Sciences de la Vie et de la Terre">Sciences de la Vie et de la Terre</option>
+        <option value="Sciences Agronomiques">Sciences Agronomiques</option>
+        <option value="Sciences Économiques">Sciences Économiques</option>
+        <option value="Techniques de Gestion et Comptabilité">Techniques de Gestion et Comptabilité</option>
+        <option value="Sciences et Technologies Électriques">Sciences et Technologies Électriques</option>
+        <option value="Sciences et Technologies Mécaniques">Sciences et Technologies Mécaniques</option>
+        <option value="Lettres Modernes">Lettres Modernes</option>
+        <option value="Lettres">Lettres</option>
+        <option value="Sciences Humaines">Sciences Humaines</option>
+        <option value="Bac International - Option Française">Bac International - Option Française</option>
+        <option value="Bac International - Option Anglaise">Bac International - Option Anglaise</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="Annee_Bac">Année du Bac :</label>
+    <select id="Annee_Bac" name="annee_bac" required>
+      <option value="">-- Choisir l'année du Bac --</option>
+      {% for annee in range(2000, 2026) %}
+        <option value="{{ annee }}">{{ annee }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="Moyenne_Bac">Moyenne Bac :</label>
+    <input type="number" step="0.01" id="Moyenne_Bac" name="moyenne_bac" required>
+  </div>
+
+  <div class="form-group">
+    <label for="Mention_Bac">Mention Bac :</label>
+   <select id="Mention_Bac" name="mention_bac">
+      <option value="">-- Choisir une mention --</option>
+      <option value="Passable">Passable</option>
+      <option value="Assez Bien">Assez Bien</option>
+      <option value="Bien">Bien</option>
+      <option value="Très Bien">Très Bien</option>
+      <option value="Excellent">Excellent</option>
+   </select>
+  </div>
+
+  <div class="form-group">
+    <label for="Niveau_Etude">Niveau d’étude :</label>
+    <select id="Niveau_Etude" name="niveau_etude" required>
+      <option value="">-- Choisir le niveau d'étude --</option>
+      <option value="Bac">Baccalauréat</option>
+      <option value="Bac+1">Bac + 1 (Licence 1ère année)</option>
+      <option value="Bac+2">Bac + 2 (DEUG, DUT, BTS)</option>
+      <option value="Licence">Licence</option>
+      <option value="Master">Master</option>
+      <option value="Doctorat">Doctorat</option>
+      <option value="Autre">Autre</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="Autres_diplome">Autres diplômes :</label>
+    <input type="text" id="Autres_diplome" name="autres_diplome">
+  </div>
+
+  <div class="form-group">
+    <label for="RIB">RIB :</label>
+    <input type="text" id="RIB" name="rib">
+    {% if erreur_rib %}
+      <div style="color: red; background-color: #ffe6e6; border: 1px solid red; padding: 10px; margin-bottom: 15px; border-radius: 5px;">
+        {{ erreur_rib }}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="form-group">
+    <label for="Telephone">Téléphone :</label>
+    <input type="tel" id="Telephone" name="telephone" required>
+    {% if erreur_telephone %}
+      <div style="color: red; background-color: #ffe6e6; border: 1px solid red; padding: 10px; margin-bottom: 15px; border-radius: 5px;">
+        {{ erreur_telephone }}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="form-group">
+    <label for="Email">Email :</label>
+    <input type="email" id="Email" name="email" required>
+    {% if erreur_email %}
+      <div style="color: red; background-color: #ffe6e6; border: 1px solid red; padding: 10px; margin-bottom: 15px; border-radius: 5px;">
+        {{ erreur_email }}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="form-group">
+    <label for="IdFiliere">Filière :</label>
+    <select id="IdFiliere" name="id_filiere" required>
+      <option value="">-- Choisir une filière --</option>
+      {% for filiere in filieres %}
+        <option value="{{ filiere.Id_Filiere }}">{{ filiere.Nom }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="IdPromotion">Promotion :</label>
+    <select id="IdPromotion" name="id_promotion" required>
+      <option value="">-- Choisir une promotion --</option>
+      {% for promo in promotions %}
+        <option value="{{ promo.Id_Promotion }}">{{ promo.Nom }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <button type="submit">Ajouter Stagiaire</button>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IFFTS | Home</title>
+ <!--<link rel="stylesheet" href="/static/home.css" />--> 
+ <style>
+  body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  min-height: 100vh;
+  background: url('/static/institut2.jpg') no-repeat center center fixed;
+  background-size: cover;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: inherit;
+  filter: blur(8px);
+  z-index: -1;
+}
+
+header {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  position: relative;
+  z-index: 1;
+}
+
+.header__logo-text {
+  font-size: 28px;
+  font-weight: bold;
+  color: #2563eb;
+  letter-spacing: 1px;
+}
+
+.header__nav {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+
+a {
+  text-decoration: none;
+  color: #000000;
+  font-weight: 600;
+  font-size: 18px;
+  transition: all 0.2s ease-in-out;
+  padding: 8px 16px;
+  border-radius: 6px;
+}
+
+a:hover {
+  background: #e0e7ff;
+  color: #151515;
+}
+
+.main-container {
+  position: relative;
+  z-index: 1;
+  padding: 60px 32px;
+  text-align: center;
+  max-width: 100%;
+  width: 100%;
+  min-height: 600px;
+}
+
+h1 {
+  font-size: 3.5rem;
+  color: #000000;
+  margin-bottom: 16px;
+}
+
+p {
+  color: #ffffff;
+  font-size: 2rem;
+  margin-bottom: 32px;
+}
+footer p {
+  color: #ffffff;
+  font-size: 16px;
+  margin: 0;
+}
+
+
+
+footer {
+  background: #1e293b;
+  color: #fff;
+  text-align: center;
+  padding: 20px 0;
+  margin-top: 40px;
+  font-size: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header__nav {
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  .main-container {
+    padding: 32px 16px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  p {
+    font-size: 1rem;
+  }
+  .image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+
+
+}
+  
+
+  .image-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+  .filiere-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .filiere-img {
+  width: 580px;
+  height: 430px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 12px;
+  }
+
+.filiere-caption {
+  color: #efeff1;
+  font-size: 25px;
+  margin-top: 8px;
+  background-color: rgba(0, 0, 0, 0.4); /* améliore lisibilité */
+  padding: 10px 15px;
+  border-radius: 8px;
+  max-width: 580px;
+}
+.filiere-img {
+  transition: transform 0.3s ease;
+}
+
+.filiere-img:hover {
+  transform: scale(1.03);
+}
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <div class="header__logo-text">IFFTS</div>
+    </div>
+    <nav class="header__nav">
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+ 
+    </nav>
+  </header>
+
+  <main class="main-container">
+    <h1>Welcome to IFFTS</h1>
+    <p>Your gateway to professional and technical excellence</p>
+    <!--<img src="/static/institut2.jpg" alt="IFFTS Institute" class="logo" />-->
+    <div class="image-container">
+      <div class="filiere-block">
+        <img src="/static/finance.jpg" alt="finance photo" class="filiere-img" />
+        <div class="filiere-caption">Filière Finance : Préparez-vous à une carrière dans la gestion financière et la comptabilité.</div>
+      </div>
+      <div class="filiere-block">
+        <img src="/static/green spaces.jpg" alt="green spaces photo" class="filiere-img" />
+        <div class="filiere-caption">Filière Espaces Verts : Devenez expert en aménagement et entretien des espaces verts.</div>
+      </div>
+    </div>
+    
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Institut de Formation des Techniciens et Techniciens Spécialisés. Tous droits réservés.</p>
+  </footer>
+</body>
+</html>

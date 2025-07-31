@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Absences</title>
+  <link rel="stylesheet" href="/static/home.css">
+  <style>
+   
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #1d4ed8;
+    }
+    .add-absence-button {
+      background-color: #1d4ed8;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .add-absence-button a {
+      color: white;
+      text-decoration: none;
+    }
+    .add-absence-button:hover {
+      background-color: #2563eb;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    thead {
+      background-color: #1d4ed8;
+      color: white;
+    }
+    td, th {
+      padding: 12px 10px;
+      border: 1px solid #d1d5db;
+      text-align: center;
+    }
+    tr:nth-child(even) {
+      background-color: #f1f5f9;
+    }
+   
+    tr:hover {
+      background-color: #76acf3;
+      color: #fcfbfb;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <div class="header__logo-text">IFFTS</div>
+    </div>
+    <nav class="header__nav">
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+
+    </nav>
+  </header>
+
+  <div style="display: flex; justify-content: space-between;  margin: 20px 20px;">
+    <h2>Liste des Absences</h2>
+    <input type="text" id="searchInput" placeholder="Rechercher par stagiaire..." style="padding: 10px; border-radius: 8px; border: 1px solid #d1d5db; width: 300px;font-size: 16px;">
+    <button class="add-absence-button">
+      <a href="/addAbsence">Ajouter Absence</a>
+    </button>
+    
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Stagiaire</th>
+        <th>Date </th>
+        <th>Jours</th>
+        <th>Motif</th>
+        <th>Filiere</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for absence in absences %}
+      <tr>
+        <td>{{ absence.stagiaire.Nom }} {{ absence.stagiaire.Prenom }}</td>
+        <td>{{ absence.Date_Absence }}</td>
+        <td>{{ absence.Nbre_absences }}</td>
+        <td>{{ absence.Motif  }}</td>
+        <td> {{absence.stagiaire.promotion.Nom}}</td>
+        <td>
+          <a href="/deleteAbsence/{{ absence.Id }}"
+            style="color: red; text-decoration: none;"
+            onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette absence ?');">
+            Supprimer
+          </a>
+        </td>
+
+      {% endfor %}
+    </tbody>
+  </table>
+  <script>
+    document.getElementById('searchInput').addEventListener('input', function() {
+      const filter = this.value.toLowerCase();
+      const rows = document.querySelectorAll('tbody tr');
+      rows.forEach(row => {
+        const stagiaireName = row.cells[0].textContent.toLowerCase();
+        row.style.display = stagiaireName.includes(filter) ? '' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>
