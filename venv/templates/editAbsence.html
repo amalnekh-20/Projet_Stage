@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier</title>
+    <style>
+    .formulaire {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f9fafb;
+      border-radius: 20px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    .formulaire h2 {
+      text-align: center;
+      color: #1d4ed8;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .form-group input {
+      width: 90%;
+      padding: 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    .form-group input:focus {
+      border-color: #1d4ed8;
+      outline: none;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #1d4ed8;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2563eb;
+    }
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #1d4ed8;
+      text-align: center;
+    }
+     .form-group select {
+        width: 80%;
+        padding: 10px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 16px;
+        background-color: #ffffff;
+      }    
+      .form-group input[type="checkbox"] {
+        margin-right: 8px;
+        vertical-align: middle; /* aligne la checkbox avec le texte */
+        width: 20px; 
+
+        height: 20px; 
+        cursor: pointer; 
+
+        transform: scale(1.2); 
+      }
+      .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 16px;
+        resize: vertical; /* permet de redimensionner la zone de texte verticalement */
+      }
+
+  </style>
+</head>
+<body>
+
+<div class="formulaire">
+    <h2>Modifier l'absence</h2>
+    <form method="POST" action="/updateAbsence/{{ absence.Id }}" class="formulaire">
+
+        <!-- Sélection du stagiaire -->
+        <div class="form-group">
+            <label for="stagiaire">Stagiaire :</label>
+            <select id="stagiaire" name="id_stagiaire" required>
+                {% for stagiaire in stagiaires %}
+                    <option value="{{ stagiaire.Id_Stagiaire }}" 
+                        {% if stagiaire.Id_Stagiaire == absence.Id_Stagiaire %}selected{% endif %}>
+                        {{ stagiaire.Nom }} {{ stagiaire.Prenom }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Date de l'absence -->
+        <div class="form-group">
+            <label for="date_absence">Date :</label>
+            <input type="date" id="date_absence" name="date_absence" 
+                value="{{ absence.Date_Absence.strftime('%Y-%m-%d') }}" required>
+        </div>
+
+        <!-- Motif -->
+        <div class="form-group">
+            <label for="motif">Motif :</label>
+            <select id="motif" name="motif" required>
+                <option value="Certificat médical" {% if absence.Motif == 'Certificat médical' %}selected{% endif %}>Certificat médical</option>
+                <option value="Cahier de soins" {% if absence.Motif == 'Cahier de soins' %}selected{% endif %}>Cahier de soins</option>
+                <option value="Autorisation" {% if absence.Motif == 'Autorisation' %}selected{% endif %}>Autorisation</option>
+                <option value="Note explicative" {% if absence.Motif == 'Note explicative' %}selected{% endif %}>Note explicative</option>
+                <option value="Autre" {% if absence.Motif == 'Autre' %}selected{% endif %}>Autre</option>
+            </select>
+        </div>
+
+        <!-- Nombre de jours -->
+        <div class="form-group">
+            <label for="nbre_jour">Nombre de jours :</label>
+            <input type="number" id="nbre_jour" name="nbre_jour" 
+                value="{{ absence.Nbre_absences }}" required>
+        </div>
+
+        <button type="submit" class="add-absence-button">Mettre à jour l'absence</button>
+    </form>
+
+</div>
+
+</body>
+</html>

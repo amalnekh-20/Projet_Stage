@@ -1,115 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Absences</title>
-  <link rel="stylesheet" href="/static/home.css">
-  <style>
-   
-    h2 {
-      font-size: 24px;
-      margin-bottom: 20px;
-      color: #1d4ed8;
-    }
-    .add-absence-button {
-      background-color: #1d4ed8;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    .add-absence-button a {
-      color: white;
-      text-decoration: none;
-    }
-    .add-absence-button:hover {
-      background-color: #2563eb;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-      margin-top: 10px;
-    }
-    thead {
-      background-color: #1d4ed8;
-      color: white;
-    }
-    td, th {
-      padding: 12px 10px;
-      border: 1px solid #d1d5db;
-      text-align: center;
-    }
-    tr:nth-child(even) {
-      background-color: #f1f5f9;
-    }
-   
-    tr:hover {
-      background-color: #76acf3;
-      color: #fcfbfb;
-    }
-
-  </style>
+  <link rel="stylesheet" href="/static/absence.css">
 </head>
 <body>
-  <header>
+  <header class="header">
     <div class="header-left">
       <div class="header__logo-text">IFFTS</div>
     </div>
     <nav class="header__nav">
-      <a href="/">Home</a>
-      <a href="/about">About</a>
-
+      <a href="/">Accueil</a>
+      <a href="/logout">Déconnexion</a>
     </nav>
   </header>
 
-  <div style="display: flex; justify-content: space-between;  margin: 20px 20px;">
-    <h2>Liste des Absences</h2>
-    <input type="text" id="searchInput" placeholder="Rechercher par stagiaire..." style="padding: 10px; border-radius: 8px; border: 1px solid #d1d5db; width: 300px;font-size: 16px;">
-    <button class="add-absence-button">
-      <a href="/addAbsence">Ajouter Absence</a>
-    </button>
-    
-  </div>
-  <table>
-    <thead>
-      <tr>
-        <th>Stagiaire</th>
-        <th>Date </th>
-        <th>Jours</th>
-        <th>Motif</th>
-        <th>Filiere</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for absence in absences %}
-      <tr>
-        <td>{{ absence.stagiaire.Nom }} {{ absence.stagiaire.Prenom }}</td>
-        <td>{{ absence.Date_Absence }}</td>
-        <td>{{ absence.Nbre_absences }}</td>
-        <td>{{ absence.Motif  }}</td>
-        <td> {{absence.stagiaire.promotion.Nom}}</td>
-        <td>
-          <a href="/deleteAbsence/{{ absence.Id }}"
-            style="color: red; text-decoration: none;"
-            onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette absence ?');">
-            Supprimer
-          </a>
-        </td>
+  <main class="container">
+    <div class="top-bar">
+      <h2>Liste des Absences</h2>
+      <div class="top-bar-right">
+        <input type="text" id="searchInput" placeholder="Rechercher par stagiaire...">
+        <button class="add-absence-button">
+          <a href="/addAbsence">Ajouter Absence</a>
+        </button>
+      </div>
+    </div>
 
-      {% endfor %}
-    </tbody>
-  </table>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Stagiaire</th>
+            <th>Date</th>
+            <th>Jours</th>
+            <th>Motif</th>
+            <th>Filière</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for absence in absences %}
+          <tr>
+            <td>{{ absence.stagiaire.Nom }} {{ absence.stagiaire.Prenom }}</td>
+            <td>{{ absence.Date_Absence }}</td>
+            <td>{{ absence.Nbre_absences }}</td>
+            <td>{{ absence.Motif }}</td>
+            <td>{{ absence.stagiaire.promotion.Nom }}</td>
+            <td>
+              <a href="/deleteAbsence/{{ absence.Id }}" class="action-btn delete-btn" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette absence ?');">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                   <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                </svg>
+              </a>
+              &nbsp;&nbsp;
+              <a href="/editAbsence/{{ absence.Id }}" class="action-btn edit-btn">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+              </svg>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </main>
+
   <script>
-    document.getElementById('searchInput').addEventListener('input', function() {
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', function() {
       const filter = this.value.toLowerCase();
-      const rows = document.querySelectorAll('tbody tr');
-      rows.forEach(row => {
-        const stagiaireName = row.cells[0].textContent.toLowerCase();
-        row.style.display = stagiaireName.includes(filter) ? '' : 'none';
+      document.querySelectorAll('tbody tr').forEach(row => {
+        const name = row.cells[0].textContent.toLowerCase();
+        row.style.display = name.includes(filter) ? '' : 'none';
       });
     });
   </script>

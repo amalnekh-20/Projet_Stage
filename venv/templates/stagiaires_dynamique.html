@@ -3,173 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Stagiaires par Filière et Promotion</title>
- <!-- <link rel="stylesheet" href="/static/home.css">-->
-  <style>
-body {
-  background: #f4f6fb;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  color: #222;
-  line-height: 1.6;
-}
+  <link rel="stylesheet" href="/static/stagiaire.css">
 
-/* Header */
-header {
-  background-color: #fff;
-  padding: 20px 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #e5e7eb;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-}
-
-.header__logo-text {
-  font-size: 28px;
-  font-weight: bold;
-  color: #2563eb;
-  letter-spacing: 1px;
-}
-
-.header__nav {
-  display: flex;
-  gap: 28px;
-  align-items: center;
-}
-a {
-  text-decoration: none;
-  color: #2563eb;
-  font-weight: 600;
-  font-size: 18px;
-  transition: all 0.2s ease-in-out;
-  padding: 8px 16px;
-  border-radius: 6px;
-}
-a:hover {
-  background: #e0e7ff;
-  color: #1e40af;
-}
-
-h2 {
-  font-size: 24px;
-  margin-bottom: 20px;
-  color: #1d4ed8;
-}
-
-label {
-  font-weight: 600;
-  margin-right: 10px;
-}
-
-select {
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 1px solid #cbd5e1;
-  background-color: #ffffff;
-  margin-right: 20px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-select:disabled {
-  background-color: #e5e7eb;
-  cursor: not-allowed;
-}
-
-.stagiaire-list {
-  margin-top: 30px;
-  overflow-x: auto;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-  margin-top: 10px;
-  min-width: 1000px;
-}
-
-thead {
-  background-color: #1d4ed8;
-  color: white;
-}
-
-td, th {
-  padding: 12px 10px;
-  border: 1px solid #d1d5db;
-  text-align: center;
-}
-
-tr:nth-child(even) {
-  background-color: #f1f5f9;
-}
-
-tr:hover {
-  background-color: #e2e8f0;
-}
-
-@media (max-width: 768px) {
-  select {
-    display: block;
-    margin-bottom: 15px;
-  }
-
-  table {
-    font-size: 13px;
-  }
-}
-button {
-  padding: 10px 15px;
-  background-color: #1d4ed8;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;  
-  transition: background-color 0.3s ease;
-  font-size: 20px;
-}
-button:hover {
-  background-color: #1e40af;
-}
-.add-stagiaire-button {
-  margin-bottom: 20px;
-  padding: 10px 15px;
-  background-color: #098bdb;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  font-size: 20px;
-}
-.add-stagiaire-button a {
-  color: white;
-  text-decoration: none;
-}
-.filter-select {
-  padding: 10px 16px;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.85);
-  font-size: 16px;
-  font-weight: 500;
-  color: #1e293b;
-  outline: none;
-  cursor: pointer;
-  min-width: 220px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.filter-select:hover {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
-}
-
-.filter-select:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
-}
-
-  </style>
 </head>
 <body>
    <header>
@@ -177,8 +12,8 @@ button:hover {
       <div class="header__logo-text">IFFTS</div>
     </div>
     <nav class="header__nav">
-      <a href="/">Home</a>
-      <a href="/about">About</a>
+      <a href="/">Acceuil</a>
+      <a href="/logout">Déconnexion</a>
 
     </nav>
   </header>
@@ -190,71 +25,48 @@ button:hover {
         Ajouter Stagiaire
       </a> 
     </button>
-    <button class="add-stagiaire-button">
-      <a href="/absence">Liste d'Absence</a>
-    </button>
-  </div>
-  <label for="filiere">Filière :</label>
-  <select id="filiereSelect" class="filter-select">
-    <option value="">-- Choisir une filière --</option>
-    {% for filiere in filieres %}
-      <option value="{{ filiere.Id_Filiere }}">{{ filiere.Nom }}</option>
-    {% endfor %}
-  </select>
 
-  <label for="promotion">Promotion :</label>
-  <select id="promotionSelect" class="filter-select" disabled>
-    <option value="">-- Choisir une promotion --</option>
-  </select>
-
-  <div class="stagiaire-list" id="stagiaireList">
-    <p>Veuillez choisir une filière et une promotion pour afficher les stagiaires.</p>
   </div>
-   
+
+
+ <label for="promotionSelect">Promotion :</label>
+<select id="promotionSelect" class="filter-select" disabled>
+  <option value="">-- Choisir une promotion --</option>
+</select>
+
+<div class="stagiaire-list" id="stagiaireList">
+  <p>Veuillez choisir une promotion pour afficher les stagiaires.</p>
+</div>
+
 
   <script>
-  const filiereSelect = document.getElementById('filiereSelect');
   const promotionSelect = document.getElementById('promotionSelect');
   const stagiaireList = document.getElementById('stagiaireList');
 
-  // ✅ Afficher tous les stagiaires au chargement
+  //  Charger directement les promotions de la filière du professeur connecté
   window.addEventListener('DOMContentLoaded', () => {
-    fetch('/api/stagiaires')
+    fetch('/api/promotions')   // ⚠️ cette route doit renvoyer seulement les promotions de la filière du prof
       .then(res => res.json())
-      .then(data => {
-        if (data.length === 0) {
+      .then(promotions => {
+        if (promotions.length === 0) {
+          promotionSelect.innerHTML = '<option>Aucune promotion trouvée</option>';
+          promotionSelect.disabled = true;
           stagiaireList.innerHTML = "<p>Aucun stagiaire trouvé.</p>";
           return;
         }
 
-        stagiaireList.innerHTML = generateTable(data, "Liste complète des stagiaires");
+        promotionSelect.innerHTML = '<option value="">-- Choisir une promotion --</option>';
+        promotions.forEach(promo => {
+          const opt = document.createElement('option');
+          opt.value = promo.id;
+          opt.textContent = promo.nom;
+          promotionSelect.appendChild(opt);
+        });
+        promotionSelect.disabled = false;
       });
   });
 
-  // ✅ Filtrage des promotions par filière
-  filiereSelect.addEventListener('change', () => {
-    const filiereId = filiereSelect.value;
-    promotionSelect.innerHTML = '<option>Chargement...</option>';
-    promotionSelect.disabled = true;
-    stagiaireList.innerHTML = "<p>Veuillez choisir une promotion.</p>";
-
-    if (filiereId) {
-      fetch(`/api/promotions/${filiereId}`)
-        .then(res => res.json())
-        .then(promotions => {
-          promotionSelect.innerHTML = '<option value="">-- Choisir une promotion --</option>';
-          promotions.forEach(promo => {
-            const opt = document.createElement('option');
-            opt.value = promo.id;
-            opt.textContent = promo.nom;
-            promotionSelect.appendChild(opt);
-          });
-          promotionSelect.disabled = false;
-        });
-    }
-  });
-
-  // ✅ Affichage des stagiaires filtrés par promotion
+  // Affichage des stagiaires filtrés par promotion
   promotionSelect.addEventListener('change', () => {
     const promoId = promotionSelect.value;
     if (!promoId) return;
@@ -269,18 +81,18 @@ button:hover {
           return;
         }
 
-        stagiaireList.innerHTML = generateTable(data, "Liste des stagiaires filtrés");
+        stagiaireList.innerHTML = generateTable(data, "Liste des stagiaires");
       });
   });
 
-  // ✅ Fonction utilitaire : génère le tableau HTML
+  //  Fonction utilitaire : génère le tableau HTML
   function generateTable(data, titre) {
     let table = `<h3>${titre}</h3>
     <table border="1" style="width:100%; border-collapse:collapse">
       <thead>
         <tr>
-          <th>Nom</th><th>Prénom</th><th>CINE</th><th>Date de naissance</th>
-          <th>Lieu</th><th>Type de Bac</th><th>Téléphone</th><th>Email</th><th>Actions</th>
+          <th>Nom</th><th>Prénom</th><th>CINE</th>
+          <th>Téléphone</th><th>Email</th><th>Actions</th>
         </tr>
       </thead>
       <tbody>`;
@@ -290,18 +102,21 @@ button:hover {
         <td>${s.nom}</td>
         <td>${s.prenom}</td>
         <td>${s.cine}</td>
-        <td>${s.date_naissance}</td>
-        <td>${s.lieu_naissance}</td>
-        <td>${s.type_bac}</td>
         <td>${s.telephone}</td>
         <td>${s.email}</td>
         <td>
-          <a href="/deleteStagiaire/${s.id_stagiaire}" style="color: red; text-decoration: none;"
+          <a href="/deleteStagiaire/${s.id_stagiaire}" class="action-btn delete-btn"
               onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce stagiaire ?');">
-              Supprimer
+               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+              </svg>
           </a>
-          <a href="/editStagiaire/${s.id_stagiaire}" style="color: green; text-decoration: none;">
-              Modifier
+          &nbsp;&nbsp;
+          <a href="/editStagiaire/${s.id_stagiaire}" class="action-btn edit-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+              </svg>
+          </a>
         </td>
       </tr>`;
     });
@@ -310,5 +125,6 @@ button:hover {
     return table;
   }
 </script>
+
 </body>
 </html>

@@ -4,6 +4,11 @@ from flask import jsonify, redirect, request , url_for
 
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+
+
 #from cryptography.fernet import Fernet
 
 # Clé à générer UNE fois, puis stockée en sécurité
@@ -13,10 +18,23 @@ from flask_sqlalchemy import SQLAlchemy
 #cipher_suite = Fernet(key.encode())
 app = Flask(__name__)
 
+# Lecture de la variable d'environnement
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev_key_pour_local')
+print("SECRET_KEY:", app.config['SECRET_KEY'])
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://amal_stage:amalstage@localhost/stage_project'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
+
+login_manager = LoginManager(app)
+login_manager.login_view = 'connexion'  # redirection si non connecté
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Professor.query.get(int(user_id))
+
+
 
 # MODELE : Filiere
 class Filiere(db.Model):
@@ -26,6 +44,7 @@ class Filiere(db.Model):
 
     promotions = db.relationship('Promotion', backref='filiere', lazy=True)
     stagiaires = db.relationship('Stagiaire', backref='filiere_obj', lazy=True)
+
 
 # MODELE : Promotion
 class Promotion(db.Model):
@@ -71,12 +90,98 @@ class Absence(db.Model):
     Justifie = db.Column(db.Boolean)
     Nbre_absences = db.Column(db.Integer, default=0)
 
+class Professor(db.Model, UserMixin):
+    __tablename__ = 'professor'
+    
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.String(50), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password_hash = db.Column(db.String(200), nullable=False)
+    role = db.Column(db.String(20), default='professor', nullable=False)
+
+    # Lien avec la filière qu’il gère
+    filiere_id = db.Column(db.Integer, db.ForeignKey('filiere.Id_Filiere'), nullable=False)
+    filiere = db.relationship('Filiere', backref='professors', lazy=True)
+
+    # Méthodes pour gérer le mot de passe
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+    
+
+
 @app.route("/")
 def accueil():
     return render_template("home.html")
 @app.route("/about")
 def about():
     return render_template("about.html")
+
+@app.route("/propos")
+def propos():
+    return render_template("propos.html")
+
+
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    filieres = Filiere.query.all()  # liste des filières
+    if request.method == "POST":
+        username = request.form["username"]
+        email = request.form["email"]
+        password = request.form["password"]
+        filiere_id = request.form["filiere"]
+
+        if Professor.query.filter_by(email=email).first():
+            return "Email déjà utilisé", 400
+
+        prof = Professor(username=username, email=email, filiere_id=filiere_id)
+        prof.set_password(password)
+        db.session.add(prof)
+        db.session.commit()
+        return redirect(url_for("connexion"))
+    return render_template("register.html", filieres=filieres)
+
+
+@app.route("/connexion", methods=["GET", "POST"])
+def connexion():
+    # Si l'utilisateur est déjà connecté, on le redirige vers son dashboard
+    if current_user.is_authenticated:
+        return redirect(url_for("dashboard"))
+
+    if request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
+        prof = Professor.query.filter_by(email=email).first()
+        if prof and prof.check_password(password):
+            login_user(prof)
+            return redirect(url_for("dashboard"))
+        else:
+            return "Email ou mot de passe incorrect", 400
+    return render_template("connexion.html")
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("accueil"))
+
+
+@app.route("/dashboard")
+@login_required
+def dashboard():
+    professor = current_user
+    # Redirection selon la filière
+    if professor.filiere_id == 1:
+        return redirect(url_for('green_spaces'))
+    elif professor.filiere_id == 2:
+        return redirect(url_for('finance'))
+    else:
+        return "Filière non gérée", 403
+
+
 
 @app.route("/finance")
 def finance():
@@ -114,51 +219,38 @@ def add_promotion():
 
     return redirect("/about")
 
+#  Page principale stagiaires
 @app.route("/stagiaires")
+@login_required
 def page_stagiaires():
-    filieres = Filiere.query.all()
-    return render_template("stagiaires_dynamique.html", filieres=filieres)
+    # Récupérer les promotions liées à la filière du professeur connecté
+    promotions = Promotion.query.filter_by(IdFiliere=current_user.filiere_id).all()
+    return render_template("stagiaires_dynamique.html", promotions=promotions)
 
-@app.route("/api/promotions/<int:id_filiere>")
-def api_promotions(id_filiere):
-    promotions = Promotion.query.filter_by(IdFiliere=id_filiere).all()
+
+@app.route("/api/promotions")
+@login_required
+def api_promotions():
+    promotions = Promotion.query.filter_by(IdFiliere=current_user.filiere_id).all()
     return jsonify([
-        {"id": p.Id_Promotion, "nom": f"{p.Nom} ({p.Annee_Debut}-{p.Annee_Fin})"}
+        {"id": p.Id_Promotion, "nom": f"{p.Nom} "}
         for p in promotions
     ])
 
+
+# Tous les stagiaires (si jamais tu veux lister sans filtre)
 @app.route("/api/stagiaires")
+@login_required
 def api_stagiaires_all():
-    stagiaires = Stagiaire.query.all()
+    stagiaires = (
+        Stagiaire.query.join(Promotion)
+        .filter(Promotion.IdFiliere == current_user.filiere_id)
+        .all()
+    )
     return jsonify([
         {
             "id_stagiaire": s.Id_Stagiaire,
             "id": s.Id_Stagiaire,
-            "nom": s.Nom,
-            "prenom": s.Prenom,
-            "cine": s.CINE,
-            "date_naissance": s.Date_Naissance.strftime("%Y-%m-%d"),
-            "lieu_naissance": s.Lieu_Naissance,
-            "type_bac": s.Type_Bac,
-            "annee_bac": s.Annee_Bac,
-            "moyenne_bac": s.Moyenne_Bac,
-            "mention_bac": s.Mention_Bac,
-            "niveau_etude": s.Niveau_Etude,
-            "autres_diplome": s.Autres_diplome,
-           # "rib": cipher_suite.decrypt(s.RIB.encode()).decode(),  # Déchiffrement du RIB
-            "rib": s.RIB,  
-            "telephone": s.Telephone,
-            "email": s.Email
-        }
-        for s in stagiaires
-    ])
-
-@app.route("/api/stagiaires/<int:id_promotion>")
-def api_stagiaires(id_promotion):
-    stagiaires = Stagiaire.query.filter_by(IdPromotion=id_promotion).all()
-    return jsonify([
-        {
-            
             "nom": s.Nom,
             "prenom": s.Prenom,
             "cine": s.CINE,
@@ -176,6 +268,34 @@ def api_stagiaires(id_promotion):
         }
         for s in stagiaires
     ])
+
+
+# Stagiaires filtrés par promotion
+@app.route("/api/stagiaires/<int:id_promotion>")
+@login_required
+def api_stagiaires(id_promotion):
+    stagiaires = Stagiaire.query.filter_by(IdPromotion=id_promotion).all()
+    return jsonify([
+        {
+            "id_stagiaire": s.Id_Stagiaire,
+            "nom": s.Nom,
+            "prenom": s.Prenom,
+            "cine": s.CINE,
+            "date_naissance": s.Date_Naissance.strftime("%Y-%m-%d"),
+            "lieu_naissance": s.Lieu_Naissance,
+            "type_bac": s.Type_Bac,
+            "annee_bac": s.Annee_Bac,
+            "moyenne_bac": s.Moyenne_Bac,
+            "mention_bac": s.Mention_Bac,
+            "niveau_etude": s.Niveau_Etude,
+            "autres_diplome": s.Autres_diplome,
+            "rib": s.RIB,
+            "telephone": s.Telephone,
+            "email": s.Email
+        }
+        for s in stagiaires
+    ])
+
 
 @app.route("/addStagiaire")
 def add_stagiaire():
@@ -265,7 +385,11 @@ def contact():
 
 @app.route("/absence")
 def absence():
-    absences = Absence.query.all()
+    
+    Professor = current_user
+    filiere_id = Professor.filiere_id
+    absences = Absence.query.join(Stagiaire).join(Promotion).filter(Promotion.IdFiliere == filiere_id).all()
+
     return render_template("absence.html", absences=absences)
 
 
@@ -304,6 +428,27 @@ def add_absence():
 def delete_absence(id_absence):
     absence = Absence.query.get_or_404(id_absence)
     db.session.delete(absence)
+    db.session.commit()
+    return redirect("/absence")
+
+@app.route("/editAbsence/<int:id_absence>")
+def edit_absence(id_absence):
+    absence = Absence.query.get_or_404(id_absence)
+    stagiaires = Stagiaire.query.all()
+    return render_template("editAbsence.html", absence=absence, stagiaires=stagiaires)
+
+# Traiter la mise à jour
+@app.route("/updateAbsence/<int:id_absence>", methods=['POST'])
+def update_absence(id_absence):
+    absence = Absence.query.get_or_404(id_absence)
+
+
+    absence.Id_Stagiaire = request.form.get('id_stagiaire', type=int)
+    absence.Date_Absence = request.form.get('date_absence')
+    absence.Motif = request.form.get('motif')
+    absence.Nbre_absences = request.form.get('nbre_jour', type=int)
+    absence.Justifie = 'justifie' in request.form
+
     db.session.commit()
     return redirect("/absence")
 

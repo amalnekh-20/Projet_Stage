@@ -5,56 +5,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Promotions | Espaces Verts & Développement Durable</title>
   <link rel="stylesheet" href="/static/finance-promo.css" />
-  
 </head>
 <body>
 
+  <!-- HEADER -->
   <header>
     <div class="header-left">
       <div class="header__logo-text">IFFTS</div>
     </div>
     <nav class="header__nav">
-      <a href="/">Home</a>
-      <a href="/about">About</a>
-
+      <a href="/stagiaires">Stagiaires</a>
+      <a href="/absence">Absences</a>
+      <a href="/logout" class="logout-btn">Déconnexion</a>
     </nav>
   </header>
 
+  <!-- MAIN -->
   <main class="main-container">
     <h1>Promotions – Espaces Verts & Développement Durable</h1>
     <p>Liste des promotions disponibles pour cette filière environnementale.</p>
 
-   <section class="promo-section">
-      <h2>Promotions - Espaces Verts & Développement Durable</h2>
+    <!-- Promotions -->
+    <section class="promo-section">
+      <h2>Liste des promotions</h2>
       <div class="promo-list">
         {% for promo in promotions %}
-        
-            <div class="promo-item">
-              <a href="/stagiaires"> {{ promo.Nom }} </a>
-            </div>
+          <div class="promo-item">
+            <a>{{ promo.Nom }}</a>
+          </div>
         {% else %}
-          <div class="promo-item">Aucune promotion trouvée</div>
+          <div class="promo-item empty">Aucune promotion trouvée</div>
         {% endfor %}
       </div>
     </section>
 
-
+    <!-- Ajouter Promotion -->
     <section class="add-promo-form">
       <h2>Ajouter une nouvelle promotion</h2>
-       <form action="/addPromotion" method="POST">
-    <input type="hidden" name="id_filiere" value="1" /> <!-- ID de la filière Finances Locales -->
-    <input type="hidden" name="nom" value="Espaces Verts & Développement Durable" />
-    <div class="form-row">
-      <input type="number" name="anneeDebut" placeholder="Année de début (ex: 2027)" required />
-      <input type="number" name="anneeFin" placeholder="Année de fin (ex: 2029)" required />
-    </div>
-    <button type="submit">Ajouter</button>
-  </form>
+      <form action="/addPromotion" method="POST">
+        <input type="hidden" name="id_filiere" value="1" />
+        <input type="hidden" name="nom" value="Espaces Verts & Développement Durable" />
+        
+        <div class="form-row">
+          <input type="number" name="anneeDebut" placeholder="Année de début (ex: 2027)" required />
+          <input type="number" name="anneeFin" placeholder="Année de fin (ex: 2029)" required />
+        </div>
+        <button type="submit">➕ Ajouter</button>
+      </form>
     </section>
   </main>
 
+  <!-- FOOTER -->
   <footer>
-    <p>&copy; 2025 Institut de Formation des Techniciens et Techniciens Spécialisés. Tous droits réservés.</p>
+    <p>&copy; 2025 Institut de Formation des Techniciens et Techniciens Spécialisés – Tous droits réservés.</p>
   </footer>
 
 </body>

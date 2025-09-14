@@ -14,8 +14,10 @@
       <div class="header__logo-text">IFFTS</div>
     </div>
     <nav class="header__nav">
-      <a href="/">Home</a>
-      <a href="/about">About</a>
+      <!--<a href="/">Home</a>-->
+      <a href="/stagiaires"> Stagiaires </a>
+      <a href="/absence"> Absences</a>
+      <a href="/logout">Logout</a>
 
     </nav>
   </header>
@@ -29,7 +31,7 @@
       <div class="promo-list">
         {% for promo in promotions %}
           <div class="promo-item">
-           <a href="/stagiaires">{{ promo.Nom }}  </a> 
+           <a >{{ promo.Nom }}  </a> 
           </div>
         {% else %}
           <div class="promo-item">Aucune promotion trouvée</div>
